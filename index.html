@@ -15,7 +15,7 @@
     </div>
     <div id="name-generator">
       <button>COPY TO CLIPBOARD</button>
-      <H1>211005-XX-HCP-ALAA-A00_0-NVT-NT-BOE-0001</H1>
+      <H1 id="name-generator-text">211005-XX-HCP-ALAA-A00_0-NVT-NT-BOE-0001</H1>
     </div>
     <div style="display:flex; align-items: center; justify-content: center;">
       <a href="https://github.com/ArjanPeeters/Karspeldreef"><img src="assets\pics\github.svg" alt="Github Logo" height="50"></a>
@@ -24,13 +24,13 @@
   <main>
     <div>
       <label>Project Code</label>
-      <select>
+      <select class="docNameSelection">
         <option label="Karspeldreef">211005</option>
       </select>
     </div>
     <div>
       <label>Project Code</label>
-      <select>
+      <select class="docNameSelection">
         <option label="As-built (Realisatie)">AB</option>
         <option label="Bouwaanvraag">BA</option>
         <option label="Definitief ontwerp">DO</option>
@@ -42,7 +42,7 @@
     </div>
     <div>
       <label>Company Code</label>
-      <select>
+      <select class="docNameSelection">
         <option label="ABT">ABT</option>
         <option label="Aldowa">ALD</option>
         <option label="Betesco">BET</option>
@@ -82,7 +82,7 @@
     </div>
     <div>
       <label>Discipline</label>
-      <select>
+      <select class="docNameSelection">
         <option label="Algemeen Aannemer">ALAA</option>
         <option label="Architect">ARCH</option>
         <option label="Demolition">DEMO</option>
@@ -113,7 +113,7 @@
     </div>
     <div>
       <label>Sub Discipline</label>
-      <select>
+      <select class="docNameSelection">
         <option label="Algemeen Aannemer">A00_0</option>
         <option label="Algemeen Architect">A01_1</option>
         <option label="Arch Vloeren">A13_0</option>
@@ -160,7 +160,7 @@
     </div>
     <div>
       <label>Building Part</label>
-      <select>
+      <select class="docNameSelection">
         <option label="Toren 1">TO1</option>
         <option label="Toren 2">TO2</option>
         <option label="Sokkel Totaal">SKT</option>
@@ -184,7 +184,7 @@
     </div>
     <div>
       <label>Level</label>
-      <select>
+      <select class="docNameSelection">
         <option label="Kelder -2">K2</option>
         <option label="Kelder -1">K1</option>
         <option label="Gelijkvloers">00</option>
@@ -231,7 +231,7 @@
     </div>
     <div>
       <label>Document Type</label>
-      <select>
+      <select class="docNameSelection">
         <option label="2D Drawing">2DD</option>
         <option label="2D model file">2DM</option>
         <option label="3D model File">3DM</option>
@@ -271,7 +271,64 @@
     </div>
     <div>
       <label>Volg Nummer</label>
-      <input type="number" id="volgnummer">
+      <input type="number" id="numberInput" value=1>
     </div>
   </main>
+
+    <script>
+      function addLeadingZeros(value) {
+          // Ensure the value is treated as a string for length checks
+          let stringValue = value.toString();
+          while (stringValue.length < 4) {
+            stringValue = '0' + stringValue;
+          }
+          return stringValue;
+        }
+
+      // Function to update the paragraph with concatenated values
+      function updateResult() {
+        const selects = document.querySelectorAll('.docNameSelection');
+        let values = [];
+
+        selects.forEach(select => {
+          values.push(select.value);
+        });
+
+        // Get the number input value, add leading zeros if necessary
+        const numberInput = document.getElementById('numberInput');
+        let numberInputValue = numberInput.value;
+
+        // Check if the number input is not empty and has a numerical value
+        if (numberInputValue) {
+          numberInputValue = addLeadingZeros(numberInputValue);
+          values.push(numberInputValue); // Correctly append the formatted number input value
+        }
+
+        // Concatenate all values with '-' between them
+        const result = values.join('-');
+
+        // Update the paragraph with the result
+        document.getElementById('name-generator-text').textContent = result;
+      }
+
+
+      // Add event listener to all select elements with class 'test'
+      document.querySelectorAll('.docNameSelection').forEach(select => {
+        select.addEventListener('change', updateResult);
+      });
+
+      // Add event listener to the number input for change and input events
+      const numberInput = document.getElementById('numberInput');
+      numberInput.addEventListener('change', updateResult);
+      numberInput.addEventListener('input', updateResult);
+
+      // Initial update in case you need to set the initial state of the <p> based on the default selected options
+      updateResult();
+    </script>
+  
+  </body>
+  
+  </html>
+
 </body>
+
