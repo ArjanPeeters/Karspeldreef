@@ -10,15 +10,15 @@
 </head>
 <body>
   <header>
-    <div style="display:flex; align-items: center; justify-content: center;">
+    <div style="justify-self: start;">
       <a href="https://bimnerd.nl" target="_blank"><img src="assets\pics\BIMnerd_Logo.png" alt="BIMnerd Logo" height="50"></a>
     </div>
-    <div id="name-generator">
-      <button>COPY TO CLIPBOARD</button>
+    <div id="name-generator" style="justify-content: center; display: flex;">
+      <button id="btn-copy-to-clipboard">COPY TO CLIPBOARD</button>
       <H1 id="name-generator-text">211005-XX-HCP-ALAA-A00_0-NVT-NT-BOE-0001</H1>
     </div>
-    <div style="display:flex; align-items: center; justify-content: center;">
-      <a href="https://github.com/ArjanPeeters/Karspeldreef"><img src="assets\pics\github.svg" alt="Github Logo" height="50"></a>
+    <div style="justify-self: end;">
+      <a href="https://github.com/ArjanPeeters/Karspeldreef" alt="Link to githubpage"><img src="assets\pics\github.svg" alt="Github Logo" height="50" style="fill: currentColor; color: white;"></a>
     </div>
   </header>
   <main>
@@ -311,7 +311,6 @@
         document.getElementById('name-generator-text').textContent = result;
       }
 
-
       // Add event listener to all select elements with class 'test'
       document.querySelectorAll('.docNameSelection').forEach(select => {
         select.addEventListener('change', updateResult);
@@ -324,6 +323,25 @@
 
       // Initial update in case you need to set the initial state of the <p> based on the default selected options
       updateResult();
+
+      document.addEventListener('DOMContentLoaded', function () {
+    // Select the button by its ID
+    const copyButton = document.getElementById('btn-copy-to-clipboard');
+
+    // Add a click event listener to the button
+    copyButton.addEventListener('click', function () {
+        // Select the text element by its ID
+        const textToCopy = document.getElementById('name-generator-text').innerText;
+
+        // Use the Clipboard API to copy the text
+        navigator.clipboard.writeText(textToCopy).then(function () {
+            console.log('Text copied to clipboard successfully!');
+        }).catch(function (error) {
+            console.error('Error copying text: ', error);
+        });
+    });
+});
+
     </script>
   
   </body>
