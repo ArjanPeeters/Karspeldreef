@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --dark-1-donkerblauw: #01283f;
+  --dark-2-blauw: #034872;
+  --dark-3-petrolblauw: #0395A5;
+  --green-1-groen: #03BF9C;
+  --green-2-appelgroen: #04D88A;
+  --gray-1-donkergrijs: #B1B1B1;
+  --gray-2-grijs: #D9D9D9;
+  --gray-3-lichtgrijs: #ECECEC;
+  --font-xs: 10px;
+  --font-sm: 12px;
+  --font-base: 14px;
+  --font-lg: 16px;
+  --font-xl: 18px;
+  --font-2xl: 20px;
+  --font-3xl: 22px;
+}
+* {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--dark-2-blauw);
+  color: var(--gray-3-lichtgrijs);
+  height: 100vh;
+  margin: 0;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  color: var(--gray-3-lichtgrijs);
+}
+
+button:hover {
+  color: var(--green-2-appelgroen);
+  cursor: pointer;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 20px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0px;
+}
+
+main div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 15px;
+}
+
+main select, main input {
+  color: var(--gray-3-lichtgrijs);
+  background-color: var(--dark-1-donkerblauw);
+  padding: 15px;
+  border-radius: 8px;
+  border: none;
+  font-size: var(--font-base);
+}
+
+#name-generator {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  height: 100px;
+  align-items: center;
+}
+
+#name-generator button{
+  height: 50%
+}
