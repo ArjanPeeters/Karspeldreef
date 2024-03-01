@@ -30,13 +30,7 @@ body {
   margin: 0;
 }
 
-button {
-  border: none;
-  background-color: transparent;
-  color: var(--gray-3-lichtgrijs);
-}
-
-button:hover {
+#btn-copy-to-clipboard:hover {
   color: var(--green-2-appelgroen);
   cursor: pointer;
 }
@@ -55,17 +49,13 @@ header {
   border-style: solid;
   padding: 10px;
   border-radius: 8px;
-  border
-}
-
-#name-generator:hover {
-  background-color: var(--gray-3-lichtgrijs);
 }
 
 main {
   display: flex;
   justify-content: center;
   padding: 20px 0px;
+  flex-wrap: wrap;
 }
 
 main div {
