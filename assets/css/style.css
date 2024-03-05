@@ -51,11 +51,20 @@ header {
 }
 
 #name-generator {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  height: 50px;
+  align-items: center;
   border: 2px;
   border-style: solid;
   padding: 10px;
   border-radius: 8px;
   border
+}
+
+#name-generator button{
+  height: 50%
 }
 
 #btn-copy-to-clipboard:hover {
@@ -84,16 +93,4 @@ main select, main input {
   border-radius: 8px;
   border: none;
   font-size: var(--font-base);
-}
-
-#name-generator {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  height: 50px;
-  align-items: center;
-}
-
-#name-generator button{
-  height: 50%
 }
