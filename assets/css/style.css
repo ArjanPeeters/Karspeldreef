@@ -58,7 +58,7 @@ header {
   border
 }
 
-#name-generator:hover {
+#btn-copy-to-cliboard:hover {
   background-color: var(--gray-3-lichtgrijs);
 }
 
