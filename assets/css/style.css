@@ -58,8 +58,9 @@ header {
   border
 }
 
-#btn-copy-to-cliboard:hover {
+#btn-copy-to-clipboard:hover {
   background-color: var(--gray-3-lichtgrijs);
+  color: var(--dark-3-petrolblauw: #0395A5);
 }
 
 main {
