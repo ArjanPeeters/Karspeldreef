@@ -17,19 +17,21 @@
   --font-2xl: 20px;
   --font-3xl: 22px;
 }
+
 * {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   background-color: var(--dark-2-blauw);
   color: var(--gray-3-lichtgrijs);
-  height: 100vh;
-  margin: 0;
+  min-height: 100vh;
 }
 
+/* Buttons */
 button {
   border: none;
   background-color: transparent;
@@ -41,56 +43,152 @@ button:hover {
   cursor: pointer;
 }
 
+/* HEADER: desktop layout */
 header {
   display: grid;
-  justify-content: space-between;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  justify-content: space-between;
   padding: 20px 20px;
-
+  column-gap: 20px;
 }
 
+header > div {
+  display: flex;
+  align-items: center;
+}
+
+/* Center block: generator */
 #name-generator {
   display: flex;
   gap: 10px;
   justify-content: center;
   height: 50px;
   align-items: center;
-  border: 2px;
-  border-style: solid;
+  border: 2px solid var(--gray-3-lichtgrijs);
   padding: 10px;
   border-radius: 8px;
-  border
 }
 
-#name-generator button{
-  height: 50%
+/* Kopieerknop in header */
+#name-generator button {
+  height: 50%;
+  white-space: nowrap;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
 }
 
 #btn-copy-to-clipboard:hover {
   background-color: var(--gray-3-lichtgrijs);
-  color: var(--dark-3-petrolblauw: #0395A5);
+  color: var(--dark-3-petrolblauw);
 }
 
+/* De gegenereerde bestandsnaam */
+#name-generator-text {
+  font-size: var(--font-base);
+  font-weight: 600;
+  text-align: center;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+/* MAIN – van flex naar responsive grid */
 main {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   justify-content: center;
-  padding: 20px 0px;
+  padding: 20px;
+  gap: 10px 20px;
 }
 
 main div {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  gap: 15px;
+  align-items: stretch;
+  padding: 10px;
+  gap: 8px;
 }
 
-main select, main input {
+/* Labels */
+main label {
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-2-grijs);
+}
+
+/* Inputs / selects */
+main select,
+main input {
   color: var(--gray-3-lichtgrijs);
   background-color: var(--dark-1-donkerblauw);
-  padding: 15px;
+  padding: 10px 12px;
   border-radius: 8px;
   border: none;
   font-size: var(--font-base);
+  width: 100%;
+}
+
+main select:focus,
+main input:focus {
+  outline: 2px solid var(--green-2-appelgroen);
+  outline-offset: 1px;
+}
+
+/* --- RESPONSIVE AANPASSINGEN --- */
+
+/* Tablet en kleiner */
+@media (max-width: 900px) {
+  header {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+    justify-items: center;
+    text-align: center;
+  }
+
+  /* logo links / github rechts krijgen allemaal breedte op kleine schermen */
+  header > div {
+    justify-content: center;
+  }
+
+  #name-generator {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #name-generator-text {
+    font-size: var(--font-sm);
+  }
+}
+
+/* Kleine telefoons */
+@media (max-width: 600px) {
+  header {
+    padding: 10px;
+  }
+
+  #name-generator {
+    flex-direction: column;
+    height: auto;
+    gap: 6px;
+  }
+
+  #name-generator button {
+    height: auto;
+    font-size: 9px;
+  }
+
+  #name-generator-text {
+    font-size: 11px;
+  }
+
+  main {
+    grid-template-columns: 1fr; /* alles onder elkaar */
+    padding: 10px;
+  }
+
+  main div {
+    padding: 8px 4px;
+  }
 }
