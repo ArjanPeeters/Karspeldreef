@@ -136,6 +136,11 @@ main input:focus {
   outline-offset: 1px;
 }
 
+.reverse-lookup small {
+  font-size: var(--font-xs);
+  color: var(--gray-1-donkergrijs);
+}
+
 /* --- RESPONSIVE AANPASSINGEN --- */
 
 /* Tablet en kleiner */
