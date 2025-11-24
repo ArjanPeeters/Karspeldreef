@@ -339,6 +339,92 @@
       numberInput.addEventListener('change', updateResult);
       numberInput.addEventListener('input', updateResult);
 
+      // Helper: match waarde tegen opties van een select
+      function findMatchForSelect(select, tokens, preferredIndex) {
+        const options = Array.from(select.options);
+
+        const matchForToken = (tok) =>
+          options.find(opt => opt.value.toUpperCase() === tok.toUpperCase());
+
+        // 1. Eerst proberen op de “verwachte” positie (token op dezelfde index)
+        const preferredToken = tokens[preferredIndex];
+        if (preferredToken) {
+          const opt = matchForToken(preferredToken);
+          if (opt) return opt.value;
+        }
+
+        // 2. Anders: kijk of er in alle tokens precies één match is
+        const candidates = [];
+        tokens.forEach(t => {
+          const opt = matchForToken(t);
+          if (opt) {
+            candidates.push(opt.value);
+          }
+        });
+
+        if (candidates.length === 1) {
+          return candidates[0];
+        }
+
+        // Meer dan één mogelijke match of geen → niets invullen
+        return null;
+      }
+
+      function parseFilename() {
+        const input = document.getElementById('filenameInput');
+        if (!input) return;
+
+        const raw = input.value.trim();
+        if (!raw) return;
+
+        // Eventuele pad en extensie strippen: C:\map\bestand.ext → bestand
+        const base = raw.split(/[\\\/]/).pop();
+        const nameWithoutExt = base.split('.').slice(0, -1).join('.') || base;
+
+        // Delen splitsen op '-'
+        const tokens = nameWithoutExt
+          .split('-')
+          .map(t => t.trim())
+          .filter(Boolean);
+
+        if (tokens.length === 0) return;
+
+        const selects = Array.from(document.querySelectorAll('.docNameSelection'));
+
+        // Voor elk select proberen we een passende token te vinden
+        selects.forEach((select, idx) => {
+          const matchedValue = findMatchForSelect(select, tokens, idx);
+          if (matchedValue) {
+            select.value = matchedValue;
+          }
+          // Geen match → laat huidige waarde gewoon staan
+        });
+
+        // Volgnummer: neem het laatste numerieke token dat we kunnen vinden
+        const numberInput = document.getElementById('numberInput');
+        if (numberInput) {
+          const numericToken = [...tokens].reverse().find(t => /^\d+$/.test(t));
+          if (numericToken) {
+            numberInput.value = parseInt(numericToken, 10);
+          }
+        }
+
+        // Alles wat wél gevonden is, verwerken in de generator
+        updateResult();
+      }
+
+      // Event listeners voor het invoerveld
+      const filenameInput = document.getElementById('filenameInput');
+      if (filenameInput) {
+        // Bij enter of verlaten veld
+        filenameInput.addEventListener('change', parseFilename);
+        // Bij plakken direct verwerken
+        filenameInput.addEventListener('paste', () => {
+          setTimeout(parseFilename, 0);
+        });
+      }
+
+
       // Initial update in case you need to set the initial state of the <p> based on the default selected options
       updateResult();
 
