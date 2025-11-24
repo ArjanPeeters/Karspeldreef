@@ -140,6 +140,7 @@ main input:focus {
   padding: 20px;
   max-width: 900px;
   margin: 0 auto;
+  justify-content: center
 }
 
 .reverse-lookup small {
