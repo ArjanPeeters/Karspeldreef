@@ -141,6 +141,18 @@ main input:focus {
   color: var(--gray-1-donkergrijs);
 }
 
+.reverse-result {
+  margin-top: 4px;
+  font-size: var(--font-xs);
+  color: var(--gray-3-lichtgrijs);
+  text-align: left;
+  width: 100%;
+}
+
+.reverse-result p {
+  margin: 2px 0;
+}
+
 /* --- RESPONSIVE AANPASSINGEN --- */
 
 /* Tablet en kleiner */

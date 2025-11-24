@@ -292,6 +292,8 @@
         placeholder="Plak hier een bestandsnaam, bijv. 211005-XX-HCP-ALAA-A00_0-NVT-NT-BOE-0001">
       <small>We vullen alleen de delen in die we herkennen. Onbekende stukken worden genegeerd.</small>
     </div>
+    <div id="reverseResult" class="reverse-result"></div>
+
 
   </main>
 
@@ -420,49 +422,48 @@
 
       // Generator bijwerken
       updateResult();
-    }
 
-    // Event voor het invoerveld onderaan
-    const filenameInput = document.getElementById('filenameInput');
-    if (filenameInput) {
-      // Reageert direct op plakken/typen
-      filenameInput.addEventListener('input', parseFilename);
-    }
+      // Event voor het invoerveld onderaan
+      const filenameInput = document.getElementById('filenameInput');
+      if (filenameInput) {
+        // Reageert direct op plakken/typen
+        filenameInput.addEventListener('input', parseFilename);
+      }
 
-    // Copy-to-clipboard knop
-    const copyButton = document.getElementById('btn-copy-to-clipboard');
-    if (copyButton) {
-      copyButton.addEventListener('click', function () {
-        const textToCopy = document.getElementById('name-generator-text')?.innerText || '';
-        if (!textToCopy) return;
+      // Copy-to-clipboard knop
+      const copyButton = document.getElementById('btn-copy-to-clipboard');
+      if (copyButton) {
+        copyButton.addEventListener('click', function () {
+          const textToCopy = document.getElementById('name-generator-text')?.innerText || '';
+          if (!textToCopy) return;
 
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(textToCopy)
-            .then(function () {
-              console.log('Text copied to clipboard successfully!');
-            })
-            .catch(function (error) {
-              console.error('Error copying text: ', error);
-            });
-        } else {
-          // Fallback voor oude browsers
-          const temp = document.createElement('textarea');
-          temp.value = textToCopy;
-          document.body.appendChild(temp);
-          temp.select();
-          try {
-            document.execCommand('copy');
-          } catch (e) {
-            console.error('Fallback copy failed', e);
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy)
+              .then(function () {
+                console.log('Text copied to clipboard successfully!');
+              })
+              .catch(function (error) {
+                console.error('Error copying text: ', error);
+              });
+          } else {
+            // Fallback voor oude browsers
+            const temp = document.createElement('textarea');
+            temp.value = textToCopy;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+              document.execCommand('copy');
+            } catch (e) {
+              console.error('Fallback copy failed', e);
+            }
+            document.body.removeChild(temp);
           }
-          document.body.removeChild(temp);
-        }
-      });
-    }
+        });
+      }
 
-    // Initiale naam opbouwen
-    updateResult();
-  });
+      // Initiale naam opbouwen
+      updateResult();
+    });
 </script>
 
   
