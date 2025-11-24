@@ -17,72 +17,186 @@
   --font-2xl: 20px;
   --font-3xl: 22px;
 }
+
 * {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   background-color: var(--dark-2-blauw);
   color: var(--gray-3-lichtgrijs);
-  height: 100vh;
-  margin: 0;
+  min-height: 100vh;
 }
 
-#btn-copy-to-clipboard:hover {
+/* Buttons */
+button {
+  border: none;
+  background-color: transparent;
+  color: var(--gray-3-lichtgrijs);
+}
+
+button:hover {
   color: var(--green-2-appelgroen);
   cursor: pointer;
 }
 
+/* HEADER: desktop layout */
 header {
   display: grid;
-  justify-content: space-between;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  justify-content: space-between;
   padding: 20px 20px;
-
+  column-gap: 20px;
 }
 
-#name-generator {
-  border: 2px;
-  border-style: solid;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-main {
+header > div {
   display: flex;
-  justify-content: center;
-  padding: 20px 0px;
-  flex-wrap: wrap;
-}
-
-main div {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 20px;
-  gap: 15px;
 }
 
-main select, main input {
-  color: var(--gray-3-lichtgrijs);
-  background-color: var(--dark-1-donkerblauw);
-  padding: 15px;
-  border-radius: 8px;
-  border: none;
-  font-size: var(--font-base);
-}
-
+/* Center block: generator */
 #name-generator {
   display: flex;
   gap: 10px;
   justify-content: center;
   height: 50px;
   align-items: center;
+  border: 2px solid var(--gray-3-lichtgrijs);
+  padding: 10px;
+  border-radius: 8px;
 }
 
-#name-generator button{
-  height: 50%
+/* Kopieerknop in header */
+#name-generator button {
+  height: 50%;
+  white-space: nowrap;
+  font-size: var(--font-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
 }
+
+#btn-copy-to-clipboard:hover {
+  background-color: var(--gray-3-lichtgrijs);
+  color: var(--dark-3-petrolblauw);
+}
+
+/* De gegenereerde bestandsnaam */
+#name-generator-text {
+  font-size: var(--font-base);
+  font-weight: 600;
+  text-align: center;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+}
+
+/* MAIN – van flex naar responsive grid */
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  justify-content: center;
+  padding: 20px;
+  gap: 10px 20px;
+}
+
+main div {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 10px;
+  gap: 8px;
+}
+
+/* Labels */
+main label {
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-2-grijs);
+}
+
+/* Inputs / selects */
+main select,
+main input {
+  color: var(--gray-3-lichtgrijs);
+  background-color: var(--dark-1-donkerblauw);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: var(--font-base);
+  width: 100%;
+}
+
+main select:focus,
+main input:focus {
+  outline: 2px solid var(--green-2-appelgroen);
+  outline-offset: 1px;
+}
+
+/* --- RESPONSIVE AANPASSINGEN --- */
+
+/* Tablet en kleiner */
+@media (max-width: 900px) {
+  header {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    row-gap: 10px;
+    padding: 10px;
+  }
+
+  /* Logo links */
+  .header-logo {
+    grid-column: 1 / 2;
+    justify-content: flex-start;
+  }
+
+  /* GitHub rechts */
+  .header-github {
+    grid-column: 2 / 3;
+    justify-content: flex-end;
+  }
+
+  /* Generator onderaan over twee kolommen */
+  #name-generator {
+    grid-column: 1 / 3;
+    flex-direction: column;
+    height: auto;
+    margin-top: 8px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  #name-generator button {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  #name-generator-text {
+    font-size: 12px;
+  }
+}
+
+/* Kleine telefoons */
+@media (max-width: 600px) {
+  #name-generator-text {
+    font-size: 10px;
+  }
+
+  #name-generator button {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+
+  main {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  main div {
+    padding: 8px 4px;
+  }
+}
+
