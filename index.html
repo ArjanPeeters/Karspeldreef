@@ -351,15 +351,17 @@
       return opt ? opt.value : null;
     }
 
-    // Reverse: bestandsnaam → selects + volgnummer
+    // Reverse: bestandsnaam → tekstuele ontleding
     function parseFilename() {
       const input = document.getElementById('filenameInput');
-      if (!input) return;
+      const output = document.getElementById('reverseResult');
+      if (!input || !output) return;
 
       const raw = input.value.trim();
+      output.innerHTML = ''; // oude resultaten weg
       if (!raw) return;
 
-      // Pad en extensie strippen
+      // Pad en extensie strippen (C:\map\file.ext → file)
       const base = raw.split(/[\\\/]/).pop();
       const nameWithoutExt = base.split('.').slice(0, -1).join('.') || base;
 
@@ -373,55 +375,48 @@
 
       const selects = Array.from(document.querySelectorAll('.docNameSelection'));
 
-      // 1. Eerst: probeer tokens op index direct te matchen
-      selects.forEach((select, idx) => {
-        const token = tokens[idx];
-        if (!token) return;
-        const val = matchTokenForSelect(select, token);
-        if (val) {
-          select.value = val;
-          select.classList.add("matched-field");
-          select.dataset._matched = '1';
-        } else {
-          select.classList.remove("matched-field");
-          select.dataset._matched = '0';
-        }
+      // Unieke matches bijhouden: "AFKORTING|VOLLEDIGENAAM"
+      const seen = new Set();
+      const matches = [];
 
+      tokens.forEach(tok => {
+        const upperTok = tok.toUpperCase();
+
+        selects.forEach(select => {
+          Array.from(select.options).forEach(opt => {
+            const val = (opt.value || '').toString().toUpperCase();
+            if (!val) return;
+
+            if (val === upperTok) {
+              const abbr = opt.value;
+              const fullName = opt.label || opt.textContent || '';
+              const key = abbr + '|' + fullName;
+
+              if (!seen.has(key)) {
+                seen.add(key);
+                matches.push({ abbr, fullName });
+              }
+            }
+          });
+        });
       });
 
-      // 2. Tweede ronde: voor selects zonder directe match, kijk in álle tokens
-      selects.forEach(select => {
-        if (select.dataset._matched === '1') return;
-
-        const options = Array.from(select.options);
-        const candidates = [];
-
-        tokens.forEach(tok => {
-          const upper = tok.toUpperCase();
-          const opt = options.find(o => o.value.toUpperCase() === upper);
-          if (opt) {
-            candidates.push(opt.value);
-          }
-        });
-
-        // Alleen als er precies één geldige match is → invullen
-        if (candidates.length === 1) {
-          select.value = candidates[0];
-          select.classList.add("matched-field");
-        } else {
-          select.classList.remove("matched-field");
-        }
-        delete select.dataset._matched;
-
-
-      // Volgnummer: laatste puur numerieke token
-      const numericToken = [...tokens].reverse().find(t => /^\d+$/.test(t));
-      if (numericToken && numberInput) {
-        numberInput.value = parseInt(numericToken, 10);
+      if (matches.length === 0) {
+        const p = document.createElement('p');
+        p.textContent = 'Geen herkenbare onderdelen gevonden.';
+        output.appendChild(p);
+        return;
       }
 
-      // Generator bijwerken
-      updateResult();
+      const frag = document.createDocumentFragment();
+      matches.forEach(({ abbr, fullName }) => {
+        const p = document.createElement('p');
+        p.textContent = `${abbr} → ${fullName}`;
+        frag.appendChild(p);
+      });
+      output.appendChild(frag);
+    }
+
 
       // Event voor het invoerveld onderaan
       const filenameInput = document.getElementById('filenameInput');
