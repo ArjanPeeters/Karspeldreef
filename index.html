@@ -293,160 +293,170 @@
 
   </main>
 
-    <script>
-      function addLeadingZeros(value) {
-          // Ensure the value is treated as a string for length checks
-          let stringValue = value.toString();
-          while (stringValue.length < 4) {
-            stringValue = '0' + stringValue;
-          }
-          return stringValue;
-        }
-
-      // Function to update the paragraph with concatenated values
-      function updateResult() {
-        const selects = document.querySelectorAll('.docNameSelection');
-        let values = [];
-
-        selects.forEach(select => {
-          values.push(select.value);
-        });
-
-        // Get the number input value, add leading zeros if necessary
-        const numberInput = document.getElementById('numberInput');
-        let numberInputValue = numberInput.value;
-
-        // Check if the number input is not empty and has a numerical value
-        if (numberInputValue) {
-          numberInputValue = addLeadingZeros(numberInputValue);
-          values.push(numberInputValue); // Correctly append the formatted number input value
-        }
-
-        // Concatenate all values with '-' between them
-        const result = values.join('-');
-
-        // Update the paragraph with the result
-        document.getElementById('name-generator-text').textContent = result;
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    function addLeadingZeros(value) {
+      let stringValue = value.toString();
+      while (stringValue.length < 4) {
+        stringValue = '0' + stringValue;
       }
+      return stringValue;
+    }
 
-      // Add event listener to all select elements with class 'test'
-      document.querySelectorAll('.docNameSelection').forEach(select => {
-        select.addEventListener('change', updateResult);
+    // Generator bovenin
+    function updateResult() {
+      const selects = document.querySelectorAll('.docNameSelection');
+      const values = [];
+
+      selects.forEach(select => {
+        values.push(select.value);
       });
 
-      // Add event listener to the number input for change and input events
       const numberInput = document.getElementById('numberInput');
+      let numberInputValue = numberInput ? numberInput.value : '';
+
+      if (numberInputValue) {
+        numberInputValue = addLeadingZeros(numberInputValue);
+        values.push(numberInputValue);
+      }
+
+      const result = values.join('-');
+      const out = document.getElementById('name-generator-text');
+      if (out) {
+        out.textContent = result;
+      }
+    }
+
+    // Alle selects → update naam
+    document.querySelectorAll('.docNameSelection').forEach(select => {
+      select.addEventListener('change', updateResult);
+    });
+
+    // Volgnummer → update naam
+    const numberInput = document.getElementById('numberInput');
+    if (numberInput) {
       numberInput.addEventListener('change', updateResult);
       numberInput.addEventListener('input', updateResult);
+    }
 
-      // Helper: match waarde tegen opties van een select
-      function findMatchForSelect(select, tokens, preferredIndex) {
-        const options = Array.from(select.options);
+    // Helper: probeer een token direct aan dit select te koppelen
+    function matchTokenForSelect(select, token) {
+      const options = Array.from(select.options);
+      const upper = token.toUpperCase();
+      const opt = options.find(o => o.value.toUpperCase() === upper);
+      return opt ? opt.value : null;
+    }
 
-        const matchForToken = (tok) =>
-          options.find(opt => opt.value.toUpperCase() === tok.toUpperCase());
+    // Reverse: bestandsnaam → selects + volgnummer
+    function parseFilename() {
+      const input = document.getElementById('filenameInput');
+      if (!input) return;
 
-        // 1. Eerst proberen op de “verwachte” positie (token op dezelfde index)
-        const preferredToken = tokens[preferredIndex];
-        if (preferredToken) {
-          const opt = matchForToken(preferredToken);
-          if (opt) return opt.value;
+      const raw = input.value.trim();
+      if (!raw) return;
+
+      // Pad en extensie strippen
+      const base = raw.split(/[\\\/]/).pop();
+      const nameWithoutExt = base.split('.').slice(0, -1).join('.') || base;
+
+      // Delen splitsen op '-'
+      const tokens = nameWithoutExt
+        .split('-')
+        .map(t => t.trim())
+        .filter(Boolean);
+
+      if (tokens.length === 0) return;
+
+      const selects = Array.from(document.querySelectorAll('.docNameSelection'));
+
+      // 1. Eerst: probeer tokens op index direct te matchen
+      selects.forEach((select, idx) => {
+        const token = tokens[idx];
+        if (!token) return;
+        const val = matchTokenForSelect(select, token);
+        if (val) {
+          select.value = val;
+          select.dataset._matched = '1';
+        } else {
+          select.dataset._matched = '0';
         }
+      });
 
-        // 2. Anders: kijk of er in alle tokens precies één match is
+      // 2. Tweede ronde: voor selects zonder directe match, kijk in álle tokens
+      selects.forEach(select => {
+        if (select.dataset._matched === '1') return;
+
+        const options = Array.from(select.options);
         const candidates = [];
-        tokens.forEach(t => {
-          const opt = matchForToken(t);
+
+        tokens.forEach(tok => {
+          const upper = tok.toUpperCase();
+          const opt = options.find(o => o.value.toUpperCase() === upper);
           if (opt) {
             candidates.push(opt.value);
           }
         });
 
+        // Alleen als er precies één geldige match is → invullen
         if (candidates.length === 1) {
-          return candidates[0];
+          select.value = candidates[0];
         }
+        delete select.dataset._matched;
+      });
 
-        // Meer dan één mogelijke match of geen → niets invullen
-        return null;
+      // Volgnummer: laatste puur numerieke token
+      const numericToken = [...tokens].reverse().find(t => /^\d+$/.test(t));
+      if (numericToken && numberInput) {
+        numberInput.value = parseInt(numericToken, 10);
       }
 
-      function parseFilename() {
-        const input = document.getElementById('filenameInput');
-        if (!input) return;
-
-        const raw = input.value.trim();
-        if (!raw) return;
-
-        // Eventuele pad en extensie strippen: C:\map\bestand.ext → bestand
-        const base = raw.split(/[\\\/]/).pop();
-        const nameWithoutExt = base.split('.').slice(0, -1).join('.') || base;
-
-        // Delen splitsen op '-'
-        const tokens = nameWithoutExt
-          .split('-')
-          .map(t => t.trim())
-          .filter(Boolean);
-
-        if (tokens.length === 0) return;
-
-        const selects = Array.from(document.querySelectorAll('.docNameSelection'));
-
-        // Voor elk select proberen we een passende token te vinden
-        selects.forEach((select, idx) => {
-          const matchedValue = findMatchForSelect(select, tokens, idx);
-          if (matchedValue) {
-            select.value = matchedValue;
-          }
-          // Geen match → laat huidige waarde gewoon staan
-        });
-
-        // Volgnummer: neem het laatste numerieke token dat we kunnen vinden
-        const numberInput = document.getElementById('numberInput');
-        if (numberInput) {
-          const numericToken = [...tokens].reverse().find(t => /^\d+$/.test(t));
-          if (numericToken) {
-            numberInput.value = parseInt(numericToken, 10);
-          }
-        }
-
-        // Alles wat wél gevonden is, verwerken in de generator
-        updateResult();
-      }
-
-      // Event listeners voor het invoerveld
-      const filenameInput = document.getElementById('filenameInput');
-      if (filenameInput) {
-        // Bij enter of verlaten veld
-        filenameInput.addEventListener('change', parseFilename);
-        // Bij plakken direct verwerken
-        filenameInput.addEventListener('paste', () => {
-          setTimeout(parseFilename, 0);
-        });
-      }
-
-
-      // Initial update in case you need to set the initial state of the <p> based on the default selected options
+      // Generator bijwerken
       updateResult();
+    }
 
-      document.addEventListener('DOMContentLoaded', function () {
-    // Select the button by its ID
+    // Event voor het invoerveld onderaan
+    const filenameInput = document.getElementById('filenameInput');
+    if (filenameInput) {
+      // Reageert direct op plakken/typen
+      filenameInput.addEventListener('input', parseFilename);
+    }
+
+    // Copy-to-clipboard knop
     const copyButton = document.getElementById('btn-copy-to-clipboard');
+    if (copyButton) {
+      copyButton.addEventListener('click', function () {
+        const textToCopy = document.getElementById('name-generator-text')?.innerText || '';
+        if (!textToCopy) return;
 
-    // Add a click event listener to the button
-    copyButton.addEventListener('click', function () {
-        // Select the text element by its ID
-        const textToCopy = document.getElementById('name-generator-text').innerText;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(textToCopy)
+            .then(function () {
+              console.log('Text copied to clipboard successfully!');
+            })
+            .catch(function (error) {
+              console.error('Error copying text: ', error);
+            });
+        } else {
+          // Fallback voor oude browsers
+          const temp = document.createElement('textarea');
+          temp.value = textToCopy;
+          document.body.appendChild(temp);
+          temp.select();
+          try {
+            document.execCommand('copy');
+          } catch (e) {
+            console.error('Fallback copy failed', e);
+          }
+          document.body.removeChild(temp);
+        }
+      });
+    }
 
-        // Use the Clipboard API to copy the text
-        navigator.clipboard.writeText(textToCopy).then(function () {
-            console.log('Text copied to clipboard successfully!');
-        }).catch(function (error) {
-            console.error('Error copying text: ', error);
-        });
-    });
-});
+    // Initiale naam opbouwen
+    updateResult();
+  });
+</script>
 
-    </script>
   
   </body>
   
