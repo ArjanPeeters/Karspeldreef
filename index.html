@@ -376,10 +376,13 @@
         const val = matchTokenForSelect(select, token);
         if (val) {
           select.value = val;
+          select.classList.add("matched-field");
           select.dataset._matched = '1';
         } else {
+          select.classList.remove("matched-field");
           select.dataset._matched = '0';
         }
+
       });
 
       // 2. Tweede ronde: voor selects zonder directe match, kijk in álle tokens
@@ -400,9 +403,12 @@
         // Alleen als er precies één geldige match is → invullen
         if (candidates.length === 1) {
           select.value = candidates[0];
+          select.classList.add("matched-field");
+        } else {
+          select.classList.remove("matched-field");
         }
         delete select.dataset._matched;
-      });
+
 
       // Volgnummer: laatste puur numerieke token
       const numericToken = [...tokens].reverse().find(t => /^\d+$/.test(t));
