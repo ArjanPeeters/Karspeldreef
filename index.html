@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Karspeldreef documentnaam generator</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <div style="justify-self: start;">
-      <a href="https://bimnerd.nl" target="_blank"><img src="assets\pics\BIMnerd_Logo.png" alt="BIMnerd Logo" height="50"></a>
+    <div class="header-logo">
+      <a href="https://bimnerd.nl" target="_blank">
+        <img src="assets/pics/BIMnerd_Logo.png" alt="BIMnerd Logo" height="50">
+      </a>
     </div>
-    <div id="name-generator" style="justify-content: center; display: flex;">
+    <div id="name-generator">
       <button id="btn-copy-to-clipboard">COPY TO CLIPBOARD</button>
-      <H1 id="name-generator-text">211005-XX-HCP-ALAA-A00_0-NVT-NT-BOE-0001</H1>
+      <h1 id="name-generator-text">211005-XX-HCP-ALAA-A00_0-NVT-NT-BOE-0001</h1>
     </div>
-    <div style="justify-self: end;">
-      <a href="https://github.com/ArjanPeeters/Karspeldreef" alt="Link to githubpage"><img src="assets\pics\github.svg" alt="Github Logo" height="50" style="fill: currentColor; color: white;"></a>
+    <div class="header-github">
+      <a href="https://github.com/ArjanPeeters/Karspeldreef" alt="Link to githubpage" target="_blank">
+        <img src="assets/pics/github.svg" alt="Github Logo" height="50">
+      </a>
     </div>
   </header>
+
   <main>
-    <div>
     <div>
       <label>Project Code</label>
       <select class="docNameSelection">
@@ -46,19 +48,17 @@
       <select class="docNameSelection">
         <option label="ABT">ABT</option>
         <option label="Aldowa">ALD</option>
-        <option label="Apto">APT</option>
         <option label="Betesco">BET</option>
         <option label="Buig Centra Steenbergen">BCS</option>
         <option label="C-Concrete">CCO</option>
         <option label="C-Metal">CME</option>
         <option label="Conix">CNX</option>
         <option label="Contractstukken">CST</option>
-        <option label="Compact">COM</option>
         <option label="Cordeel">COR</option>
         <option label="Cordeel Amsterdam">COA</option>
-        <option label="De bosman bedrijven    ">DBB</option>
+        <option label="De bosman bedrijven">DBB</option>
         <option label="Desa">DSA</option>
-        <option label="Frank van Rooij ">FVR</option>
+        <option label="Frank van Rooij">FVR</option>
         <option label="Gemeente Amsterdam">GAM</option>
         <option label="Glas Design">GLD</option>
         <option label="HCKP">HCK</option>
@@ -75,7 +75,7 @@
         <option label="Megaton">MEG</option>
         <option label="Microbeton">MBN</option>
         <option label="Oranjedak">ORD</option>
-        <option label="Peikko  ">PKO</option>
+        <option label="Peikko">PKO</option>
         <option label="Prefaco">PFC</option>
         <option label="ROI">ROI</option>
         <option label="Roodenburg">ROO</option>
@@ -88,7 +88,6 @@
         <option label="Trappenfabriek Vermeulen">VER</option>
         <option label="Vorsselmans">VOR</option>
         <option label="Walraven">WAL</option>
-        <option label="Wurks">WUR</option>
       </select>
     </div>
     <div>
@@ -106,7 +105,7 @@
         <option label="Mechanical">MECH</option>
         <option label="NVT">NVTP</option>
         <option label="Prefab Beton">PRBE</option>
-        <option label="Prefab Staal">PRST</option>
+        <option label="Prefab Staal">PRST</</option>
         <option label="Project- en procesmanagement">PMPM</option>
         <option label="Ramen en deuren">RADE</option>
         <option label="Reinforcement">REIN</option>
@@ -257,7 +256,7 @@
         <option label="Gevel">GEV</option>
         <option label="Inplanting">INP</option>
         <option label="Installatieschema">INS</option>
-        <option label="Isometrische projectie">ISO</option>
+        <option label="Isometrische projectie">ISO</option>
         <option label="Kozijnen">KOZ</option>
         <option label="Lijst">LIJ</option>
         <option label="Model">MOD</option>
@@ -270,8 +269,8 @@
         <option label="Schema">SCH</option>
         <option label="Situatie">SIT</option>
         <option label="Tekeninglijst">TEK</option>
-        <option label="Technische ruimtes">TER</option>
-        <option label="Technische schachten">TES</option>
+        <option label="Technische ruimtes">TER</option>
+        <option label="Technische schachten">TES</option>
         <option label="Technische omschrijving">TOM</option>
         <option label="Terrein">TRN</option>
         <option label="Typicals">TYP</option>
@@ -280,191 +279,24 @@
         <option label="Vloerplan">VLO</option>
       </select>
     </div>
-    </div>
     <div>
       <label>Volg Nummer</label>
-      <input type="number" id="numberInput" value=1>
+      <input type="number" id="numberInput" value="1">
     </div>
 
     <div class="reverse-lookup">
       <label for="filenameInput">Naam ontleden</label>
-      <input type="text" id="filenameInput"
-        placeholder="Plak hier een bestandsnaam, bijv. 211005-XX-HCP-ALAA-A00_0-NVT-NT-BOE-0001">
-      <small>We vullen alleen de delen in die we herkennen. Onbekende stukken worden genegeerd.</small>
+      <input
+        type="text"
+        id="filenameInput"
+        placeholder="Plak hier een bestandsnaam, bijv. 211005-XX-HCP-ALAA-A00_0-NVT-NT-BOE-0001"
+      >
+      <small>We tonen alleen de onderdelen die we herkennen. Onbekende stukken worden genegeerd.</small>
     </div>
+
     <div id="reverseResult" class="reverse-result"></div>
-
-
   </main>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    function addLeadingZeros(value) {
-      let stringValue = value.toString();
-      while (stringValue.length < 4) {
-        stringValue = '0' + stringValue;
-      }
-      return stringValue;
-    }
-
-    // Generator bovenin
-    function updateResult() {
-      const selects = document.querySelectorAll('.docNameSelection');
-      const values = [];
-
-      selects.forEach(select => {
-        values.push(select.value);
-      });
-
-      const numberInput = document.getElementById('numberInput');
-      let numberInputValue = numberInput ? numberInput.value : '';
-
-      if (numberInputValue) {
-        numberInputValue = addLeadingZeros(numberInputValue);
-        values.push(numberInputValue);
-      }
-
-      const result = values.join('-');
-      const out = document.getElementById('name-generator-text');
-      if (out) {
-        out.textContent = result;
-      }
-    }
-
-    // Alle selects → update naam
-    document.querySelectorAll('.docNameSelection').forEach(select => {
-      select.addEventListener('change', updateResult);
-    });
-
-    // Volgnummer → update naam
-    const numberInput = document.getElementById('numberInput');
-    if (numberInput) {
-      numberInput.addEventListener('change', updateResult);
-      numberInput.addEventListener('input', updateResult);
-    }
-
-    // Helper: probeer een token direct aan dit select te koppelen
-    function matchTokenForSelect(select, token) {
-      const options = Array.from(select.options);
-      const upper = token.toUpperCase();
-      const opt = options.find(o => o.value.toUpperCase() === upper);
-      return opt ? opt.value : null;
-    }
-
-    // Reverse: bestandsnaam → tekstuele ontleding
-    function parseFilename() {
-      const input = document.getElementById('filenameInput');
-      const output = document.getElementById('reverseResult');
-      if (!input || !output) return;
-
-      const raw = input.value.trim();
-      output.innerHTML = ''; // oude resultaten weg
-      if (!raw) return;
-
-      // Pad en extensie strippen (C:\map\file.ext → file)
-      const base = raw.split(/[\\\/]/).pop();
-      const nameWithoutExt = base.split('.').slice(0, -1).join('.') || base;
-
-      // Delen splitsen op '-'
-      const tokens = nameWithoutExt
-        .split('-')
-        .map(t => t.trim())
-        .filter(Boolean);
-
-      if (tokens.length === 0) return;
-
-      const selects = Array.from(document.querySelectorAll('.docNameSelection'));
-
-      // Unieke matches bijhouden: "AFKORTING|VOLLEDIGENAAM"
-      const seen = new Set();
-      const matches = [];
-
-      tokens.forEach(tok => {
-        const upperTok = tok.toUpperCase();
-
-        selects.forEach(select => {
-          Array.from(select.options).forEach(opt => {
-            const val = (opt.value || '').toString().toUpperCase();
-            if (!val) return;
-
-            if (val === upperTok) {
-              const abbr = opt.value;
-              const fullName = opt.label || opt.textContent || '';
-              const key = abbr + '|' + fullName;
-
-              if (!seen.has(key)) {
-                seen.add(key);
-                matches.push({ abbr, fullName });
-              }
-            }
-          });
-        });
-      });
-
-      if (matches.length === 0) {
-        const p = document.createElement('p');
-        p.textContent = 'Geen herkenbare onderdelen gevonden.';
-        output.appendChild(p);
-        return;
-      }
-
-      const frag = document.createDocumentFragment();
-      matches.forEach(({ abbr, fullName }) => {
-        const p = document.createElement('p');
-        p.textContent = `${abbr} → ${fullName}`;
-        frag.appendChild(p);
-      });
-      output.appendChild(frag);
-    }
-
-
-      // Event voor het invoerveld onderaan
-      const filenameInput = document.getElementById('filenameInput');
-      if (filenameInput) {
-        // Reageert direct op plakken/typen
-        filenameInput.addEventListener('input', parseFilename);
-      }
-
-      // Copy-to-clipboard knop
-      const copyButton = document.getElementById('btn-copy-to-clipboard');
-      if (copyButton) {
-        copyButton.addEventListener('click', function () {
-          const textToCopy = document.getElementById('name-generator-text')?.innerText || '';
-          if (!textToCopy) return;
-
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(textToCopy)
-              .then(function () {
-                console.log('Text copied to clipboard successfully!');
-              })
-              .catch(function (error) {
-                console.error('Error copying text: ', error);
-              });
-          } else {
-            // Fallback voor oude browsers
-            const temp = document.createElement('textarea');
-            temp.value = textToCopy;
-            document.body.appendChild(temp);
-            temp.select();
-            try {
-              document.execCommand('copy');
-            } catch (e) {
-              console.error('Fallback copy failed', e);
-            }
-            document.body.removeChild(temp);
-          }
-        });
-      }
-
-      // Initiale naam opbouwen
-      updateResult();
-    });
-</script>
-
-  
-  </body>
-  
-  </html>
-
+  <script src="script.js"></script>
 </body>
-
+</html>
